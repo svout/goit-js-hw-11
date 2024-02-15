@@ -4,7 +4,7 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 
-document.getElementById('searchForm').addEventListener('submit', function(event) {
+document.getElementById('searchForm').addEventListener('submit', (event) => {
     event.preventDefault();
 
     const query = document.getElementById('searchInput').value.trim();
