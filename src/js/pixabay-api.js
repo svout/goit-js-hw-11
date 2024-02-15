@@ -1,5 +1,8 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+
 
 document.getElementById('searchForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -9,7 +12,9 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     if (query === "") {
         iziToast.error({
             title: 'Error',
-            message: 'Please enter a search query.'
+            message: 'Please enter a search query.',
+            position:'topRight'
+            
         });
         return;
     }
@@ -22,7 +27,8 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
             if (data.hits.length === 0) {
                 iziToast.error({
                     title: 'Error',
-                    message: 'Sorry, there are no images matching your search query. Please try again.'
+                    message: 'Sorry, there are no images matching your search query. Please try again.',
+                    position: 'topRight'
                 });
             } else {
                 document.getElementById('imageGallery').innerHTML = '';
@@ -55,15 +61,16 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
                     document.getElementById('imageGallery').appendChild(card);
                 });
 
-                const lightbox = new SimpleLightbox('.gallery-link'); // Initialize SimpleLightbox with the appropriate selector
+                const lightbox = new SimpleLightbox('.gallery-link'); 
                 lightbox.refresh();
             }
         })
         .catch(error => {
-            console.error('Error fetching data:', error);
+            console.log('Error fetching data:', error);
             iziToast.error({
                 title: 'Error',
-                message: 'An error occurred while fetching data. Please try again later.'
+                message: 'An error occurred while fetching data. Please try again later.',
+                position:'topRight'
             });
         });
 });
