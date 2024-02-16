@@ -6,20 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla App Template</title>
     
-    <script type="module" crossorigin src="/goit-js-hw-11/assets/modulepreload-polyfill-3cfb730f.js"></script>
-    <link rel="stylesheet" href="/goit-js-hw-11/assets/index-c124380d.css">
+    <script type="module" crossorigin src="/goit-js-hw-11/commonHelpers.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-11/assets/vendor-7659544d.js">
+    <link rel="stylesheet" href="/goit-js-hw-11/assets/vendor-a51daae5.css">
+    <link rel="stylesheet" href="/goit-js-hw-11/assets/index-87cecb79.css">
   </head>
   <body>
-    <header class="header">
-  <nav class="nav">
-    <ul class="nav-list">
-      <li class="nav-item">
-        <a href="./pixabay-api.html" class="nav-link">ImageFinder</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+    <form id="searchForm">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter your search query"
+      />
+      <button type="submit">Search</button>
+    </form>
 
+    <div class="gallery" id="imageGallery"></div>
+
+    <span class="loader"></span>
 
     
   </body>
