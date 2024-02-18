@@ -3,6 +3,8 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
+const loader = document.querySelector('.loader');
+loader.style.display = 'none';
 
 document.getElementById('searchForm').addEventListener('submit', (event) => {
     event.preventDefault();
@@ -14,16 +16,19 @@ document.getElementById('searchForm').addEventListener('submit', (event) => {
             title: 'Error',
             message: 'Please enter a search query.',
             position:'topRight'
-            
         });
         return;
     }
+
+    loader.style.display = 'inline-block';
 
     const apiKey = '42374416-80395e50359da313800ed9b7e';
 
     fetch(`https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`)
         .then(response => response.json())
         .then(data => {
+            loader.style.display = 'none';
+
             if (data.hits.length === 0) {
                 iziToast.error({
                     title: 'Error',
@@ -46,13 +51,13 @@ document.getElementById('searchForm').addEventListener('submit', (event) => {
                     img.alt = image.tags;
 
                     const details = document.createElement('div');
-                            details.classList.add('details');
-                            details.innerHTML = `
-                                <p>Likes: ${image.likes}</p>
-                                <p>Views: ${image.views}</p>
-                                <p>Comments: ${image.comments}</p>
-                                <p>Downloads: ${image.downloads}</p>
-                            `;
+                    details.classList.add('details');
+                    details.innerHTML = `
+                        <p>Likes: ${image.likes}</p>
+                        <p>Views: ${image.views}</p>
+                        <p>Comments: ${image.comments}</p>
+                        <p>Downloads: ${image.downloads}</p>
+                    `;
 
                     link.appendChild(img);
                     card.appendChild(link);
@@ -67,6 +72,7 @@ document.getElementById('searchForm').addEventListener('submit', (event) => {
         })
         .catch(error => {
             console.log('Error fetching data:', error);
+            loader.style.display = 'none';
             iziToast.error({
                 title: 'Error',
                 message: 'An error occurred while fetching data. Please try again later.',
@@ -75,70 +81,8 @@ document.getElementById('searchForm').addEventListener('submit', (event) => {
         });
 });
 
-const galleryList = document.querySelector('.gallery');
-
-function createGallery(imagesArray) {
-    const galleryItems = imagesArray.map(image => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('gallery-item');
-
-        const link = document.createElement('a');
-        link.classList.add('gallery-link');
-        link.href = image.original;
-
-        const imageElement = document.createElement('img');
-        imageElement.classList.add('gallery-image');
-        imageElement.src = image.preview;
-        imageElement.alt = image.description;
-        imageElement.dataset.source = image.original;
-
-        link.appendChild(imageElement);
-        listItem.appendChild(link);
-
-        return listItem;
-    });
-
-    galleryList.append(...galleryItems);
-}
-
-createGallery(images);
-galleryList.addEventListener('click', onGalleryItemClick);
-
-function onGalleryItemClick(event) {
-    event.preventDefault();
-
-    if (event.target.nodeName !== 'IMG') {
-        return;
-    }
-
-    const largeImageURL = event.target.dataset.source;
-    const largeAlt = event.target.alt;
-
-    const instance = basicLightbox.create(`<img src="${largeImageURL}" class="largeImage" alt="${largeAlt}">`, {
-        onShow: (instance) => {
-            const onKeyUp = (event) => {
-                if (event.code === 'Escape') {
-                    instance.close();
-                }
-            };
-
-            window.addEventListener('keyup', onKeyUp);
-            instance.__onKeyUp = onKeyUp;
-        },
-        onClose: (instance) => {
-            window.removeEventListener('keyup', instance.__onKeyUp);
-        }
-    });
-
-    instance.show();
-}
-
-const loader = document.querySelector('.loader');
-loader.style.display = 'inline-block';
 const script = document.createElement('script');
 script.src = './js/pixabay-api.js';
 
-script.onload = function() {
-  loader.style.display = 'none';
-};
+script.onload = function() {};
 document.body.appendChild(script);

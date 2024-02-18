@@ -111,25 +111,28 @@ button[type="submit"]:hover {
 .loader {
   width: 48px;
   height: 48px;
-  background: #fff;
   border-radius: 50%;
+  left: 50%;
+  right: 50%;
   position: relative;
-  animation: roll 1s ease-in-out infinite alternate;
+  animation: rotate 1s linear infinite
 }
-.loader:after{
-  content:"";
+.loader::before , .loader::after {
+  content: "";
+  box-sizing: border-box;
   position: absolute;
-  inset: 5px;
+  inset: 0px;
   border-radius: 50%;
-  border: 5px solid ;
-  border-color: #ff3d00 transparent;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite ;
 }
-@keyframes roll {
-  0% {
-    transform: translateX(-150%) rotate(0deg) ;
-  }
-  100% {
-    transform:  translateX(150%) rotate(360deg);
-  }
+.loader::after{
+  border-color: #FF3D00;
+  animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;
+  inset: 6px;
 }
 
+@keyframes rotate {
+  0%   {transform: rotate(0deg)}
+  100%   {transform: rotate(360deg)}
+}
