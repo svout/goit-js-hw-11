@@ -81,8 +81,4 @@ document.getElementById('searchForm').addEventListener('submit', (event) => {
         });
 });
 
-const script = document.createElement('script');
-script.src = './js/pixabay-api.js';
 
-script.onload = function() {};
-document.body.appendChild(script);
